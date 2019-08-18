@@ -1,7 +1,7 @@
 {
   "name": "figma-dominant-color-utilities",
   "version": "1.0.0",
-  "description": "",
+  "description": "Utilities for using dominant colors, palettes, and contrasting text colors.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -1,6 +1,6 @@
 {
   "api": "1.0.0",
-  "name": "dominant-color-utilities",
+  "name": "Dominant Color Utilities ✨",
   "main": "build/code.js",
   "ui": "build/ui.html"
 }

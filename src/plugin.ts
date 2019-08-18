@@ -27,24 +27,25 @@ async function main(nodes) {
   if (!hasValidSelection(nodes)) return figma.closePlugin('Invalid selection')
 
   if (nodes.length > 1 && nodes.every(isFrametypeNode)) {
+    console.log({ 1: nodes })
     for (let frame of nodes) {
       await main([frame])
     }
 
-    return
+    return Promise.resolve()
   }
 
   if (nodes.length > 1 && nodes.every(nodeIsSourceImage)) {
-    console.log('every node selected is an image')
+    console.log({ 2: nodes })
     for (let image of nodes) {
       await main([ image ])
     }
 
-    return
+    return Promise.resolve()
   }
   
   if (selectedSingleImage(nodes)) {
-    console.log({ 1: nodes })
+    console.log({ 3: nodes })
 
     const node = nodes[0]
     const data = await getDataForUIFromNode(node)
@@ -59,12 +60,12 @@ async function main(nodes) {
         })
       }
 
-      return
+      return Promise.resolve()
     })
   }
 
   if (selectedFrameContainsImageAndFillables(nodes)) {
-    console.log({ 2: nodes })
+    console.log({ 4: nodes })
 
     // open the modal with the selected image
     const node = getSourceImageNodeFromNodes(nodes)
@@ -81,12 +82,12 @@ async function main(nodes) {
         await applyTransformationsToNodes(transformable, data).then(() => res())
       }
 
-      return
+      return Promise.resolve()
     })
   }
 
   if (selectedImageAndFillables(nodes)) {
-    console.log({ 3: nodes })
+    console.log({ 5: nodes })
 
     const node = getSourceImageNodeFromNodes(nodes)
     const data = await getDataForUIFromNode(node)
@@ -100,13 +101,11 @@ async function main(nodes) {
       figma.ui.onmessage = async data => {
         await applyTransformationsToNodes(transformable, data).then(() => res())
       }
-
-      return
     })
   }
 
   if (seletedFillablesWithoutImage(nodes)) {
-    console.log({ 4: nodes })
+    console.log({ 6: nodes })
 
     const node = getSourceImageNodeFromParentsOfNodes(nodes)
     const data = await getDataForUIFromNode(node)
@@ -117,7 +116,7 @@ async function main(nodes) {
         await applyTransformationsToNodes(nodes, data).then(() => res())
       }
 
-      return
+      return Promise.resolve()
     })
   }
 
@@ -125,4 +124,4 @@ async function main(nodes) {
 }
 
 const selection = figma.currentPage.selection
-main(selection)
+main(selection).then(() => figma.closePlugin('Colors generated ✨'))
