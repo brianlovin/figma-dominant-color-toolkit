@@ -8,7 +8,7 @@ interface ImageProps {
 }
 
 function getImageColors(bytes): Promise<ImageProps> {
-  const img = document.getElementById('main')
+  const img = document.createElement('img')
   const blob = new Blob( [ bytes ], { type: "image/jpeg" });
   const urlCreator = window.URL
   const imageUrl = urlCreator.createObjectURL(blob)
