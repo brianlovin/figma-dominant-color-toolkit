@@ -1,4 +1,5 @@
 import { RGB } from './colors'
+import { isArray } from 'util';
 
 function isTextNode(node): boolean {
   return node.type === "TEXT"
@@ -62,9 +63,19 @@ function paintIsImage(paint): boolean {
   return paint.type === "IMAGE"
 }
 
-function nodeContainsImagePaint(node): boolean {
-  if (node.fills) return node.fills.some(paintIsImage)
-  if (node.backgrounds) return node.backgrounds.some(paintIsImage)
+function nodeFillsContainsImagePaint(node): boolean {
+  if (node.fills) {
+    if (node.fills.length === 0) return false
+    if (!Array.isArray(node.fills)) return false
+    return node.fills.some(paintIsImage)
+  }
+
+  if (node.backgrounds) {
+    if (node.backgrounds.length === 0) return false
+    if (!Array.isArray(node.backgrounds)) return false
+    return node.backgrounds.some(paintIsImage)
+  }
+
   return false
 }
 
@@ -78,9 +89,9 @@ function nodesContainFillable(nodes): boolean {
 }
 
 function nodeContainsSourceImage(node): boolean {
-  if (isShapeNode(node)) return nodeContainsImagePaint(node)
+  if (isShapeNode(node)) return nodeFillsContainsImagePaint(node)
   if (isFrametypeNode(node)) {
-    const frameIsSourceImage = nodeContainsImagePaint(node)
+    const frameIsSourceImage = nodeFillsContainsImagePaint(node)
     const frameContainsChildrenWithSourceImage = nodesContainSourceImage(node.children)
     return frameIsSourceImage || frameContainsChildrenWithSourceImage
   }
@@ -112,7 +123,7 @@ export function selectedSingleImage(nodes) {
   const hasChildren = isFrame && selectedNode.children.length > 0
   if (hasChildren) return false
 
-  return nodeContainsImagePaint(selectedNode)
+  return nodeFillsContainsImagePaint(selectedNode)
 }
 
 export function selectedFrameContainsImageAndFillables(nodes): boolean {
@@ -124,7 +135,7 @@ export function selectedFrameContainsImageAndFillables(nodes): boolean {
   if (!isFrame) return false
 
   // does the frame itself contain a valid paint?
-  if (nodeContainsImagePaint(selectedNode)) {
+  if (nodeFillsContainsImagePaint(selectedNode)) {
     // see if fillables exist within the frame
     return nodesContainFillable(selectedNode.children)
   } else {
@@ -143,14 +154,19 @@ export function selectedImageAndFillables(nodes): boolean {
 }
 
 function parentTreeOfNodesHasSourceImage(nodes): boolean {
-  return nodes.some(node => {
-    // if we get outside of a frame, we've gone too far
-    if (nodeContainsSourceImage(node)) return true
+  for (let node of nodes) {
+    // we've gone too far
     if (node.type === "PAGE") return false
+
+    if (nodeIsSourceImage(node)) return true
+    if (nodeContainsSourceImage(node)) return true
+
     const parentContainsSource = nodesContainSourceImage(node.parent.children)
     const parentIsSource = nodeIsSourceImage(node.parent)
-    return parentContainsSource || parentIsSource
-  })
+    if (parentContainsSource || parentIsSource) return true
+
+    return parentTreeOfNodesHasSourceImage(node.parent.parent.children)
+  }
 }
 
 export function seletedFillablesWithoutImage(nodes) {
@@ -163,29 +179,22 @@ export function seletedFillablesWithoutImage(nodes) {
   return parentTreeOfNodesHasSourceImage(nodes)
 }
 
-export function getSourceImageNodeFromParentsOfNodes(nodes) {
-  for (let node of nodes) {
-    if (nodeIsSourceImage(node)) return node
-    if (nodeIsSourceImage(node.parent)) return node.parent
-    return getSourceImageNodeFromParentsOfNodes(node.parent.children)
-  }
+export function nodeIsSourceImage(node): boolean {
+  return nodeFillsContainsImagePaint(node)
 }
 
-export function nodeIsSourceImage(node): boolean {
-  if (isShapeNode(node)) {
-    if(nodeContainsImagePaint(node)) {
-      return true
-    }
+export function getSourceImageNodeFromParentsOfNodes(nodes) {
+  for (let node of nodes) {
+    if (node.type === "PAGE") return null
 
-    return false
-  }
+    if (nodeIsSourceImage(node)) return node
+    if (nodeIsSourceImage(node.parent)) return node.parent
+    
+    const siblingIsSourceImage = node.parent.children.find(nodeIsSourceImage)
+    if (siblingIsSourceImage) return siblingIsSourceImage
 
-  if (isFrametypeNode(node)) {
-    if (nodeContainsImagePaint(node)) {
-      return true
-    }
-
-    return false
+    if (parentTreeOfNodesHasSourceImage(nodes)) return getSourceImageNodeFromParentsOfNodes(node.parent.parent.children)
+    return null
   }
 }
 
@@ -215,7 +224,23 @@ export interface UIColorData {
 function setNodeFillFromRGB(node, color: RGB, options = {}) {
   // only override the color and optional properties, but retain all 
   // existing properties like fill opacity
-  const copies = node.fills.slice().map(fill => ({ ...fill, color, ...options }))
+  const gradientFillTypes = [ "GRADIENT_LINEAR", "GRADIENT_RADIAL", "GRADIENT_ANGULAR", "GRADIENT_DIAMOND"]
+  const solidFill = (fill) => ({ ...fill, color, ...options })
+  const gradientFill = (fill) => ({ 
+    ...fill,
+    gradientStops: fill.gradientStops.map(gs => ({ ...gs, color: { ...gs.color, ...color }})),
+    ...options
+  })
+
+  if (!Array.isArray(node.fills)) return
+
+  const copies = node.fills.slice().map(fill => { 
+    if (fill.type === "IMAGE") return fill
+    if (fill.type === 'SOLID') return solidFill(fill)
+    if (gradientFillTypes.indexOf(fill.type) >= 0) return gradientFill(fill)
+    return fill
+  })
+
   return node.fills = copies
 }
 
@@ -231,7 +256,7 @@ export async function applyTransformationsToNodes(nodes, data: UIColorData) {
     }
 
     if (isShapeNode(node)) {
-      if (!nodeContainsImagePaint(node)) setNodeFillFromRGB(node, dominantColor)
+      if (!nodeFillsContainsImagePaint(node)) setNodeFillFromRGB(node, dominantColor)
     }
 
     if (isFrametypeNode(node)) {

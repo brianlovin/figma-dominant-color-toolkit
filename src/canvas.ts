@@ -65,17 +65,17 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
   label.fills = [{ type: 'SOLID', color: black }]
   label.fontSize = 10
   
-  const dominantLabel = label.clone()
+  const dominantLabel = label
   dominantLabel.characters = "DOMINANT COLOR"
   dominantLabel.y = contentStartY
   dominantLabel.x = leftMargin
   
   const recommendedTextLabel = dominantLabel.clone()
-  recommendedTextLabel.characters = "RECOMMENDED TEXT COLORS"
+  recommendedTextLabel.characters = "RECOMMENDED TEXT COLOR"
   recommendedTextLabel.y = dominantLabel.y + labelBottomMargin + swatchSize + labelTopMargin
 
   const paletteLabel = recommendedTextLabel.clone()
-  paletteLabel.characters = "PALETTE"
+  paletteLabel.characters = "IMAGE PALETTE"
   paletteLabel.y = recommendedTextLabel.y + labelBottomMargin + swatchSize + labelTopMargin
 
   frame.appendChild(dominantLabel)
@@ -91,22 +91,21 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
   swatch.strokeAlign = "INSIDE"
   swatch.strokes = [{ type: 'SOLID', color: black, opacity: 0.08 }]
   
-  const dominantSwatch = swatch.clone()
+  const dominantSwatch = swatch
   dominantSwatch.fills = [{ type: 'SOLID', color: dominantColor }]
-
-  const suggestedTextSwatchOne = dominantSwatch.clone()
-  suggestedTextSwatchOne.y = recommendedTextLabel.y + labelBottomMargin
-  suggestedTextSwatchOne.fills = [{ type: 'SOLID', color: suggestedTextColors[0]}]
-  const suggestedTextSwatchTwo = suggestedTextSwatchOne.clone()
-  suggestedTextSwatchTwo.x = leftMargin + swatchSize + swatchGap
-  suggestedTextSwatchTwo.fills = [{ type: 'SOLID', color: suggestedTextColors[1]}]
-  
   frame.appendChild(dominantSwatch)
-  frame.appendChild(suggestedTextSwatchOne)
-  frame.appendChild(suggestedTextSwatchTwo)
+
+  for (let [index, color] of suggestedTextColors.entries()) {
+    let paletteSwatch = dominantSwatch.clone()
+    paletteSwatch.x = leftMargin + (index * (swatchSize + swatchGap))
+    paletteSwatch.y = recommendedTextLabel.y + labelBottomMargin
+    paletteSwatch.fills = [{ type: 'SOLID', color }]
+    frame.appendChild(paletteSwatch)
+  }
+  
   
   for (let [index, color] of palette.entries()) {
-    let paletteSwatch = suggestedTextSwatchOne.clone()
+    let paletteSwatch = dominantSwatch.clone()
     paletteSwatch.x = leftMargin + (index * (swatchSize + swatchGap))
     paletteSwatch.y = paletteLabel.y + labelBottomMargin
     paletteSwatch.fills = [{ type: 'SOLID', color }]

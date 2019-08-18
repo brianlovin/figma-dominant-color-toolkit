@@ -45,8 +45,8 @@ export function getTextColorsFromRGB(props: RGB): RGB[] {
   L = 0.2126 * C[0] + 0.7152 * C[1] + 0.0722 * C[2];
 
   if (L > 0.179) {
-    return [ black, tintRGB({ rgb: props, amount: -80 }) ];
+    return [ tintRGB({ rgb: props, amount: -80 }) ];
   } else {
-    return [ white, tintRGB({ rgb: props, amount: 180 }) ];
+    return [ white ];
   }
 }
