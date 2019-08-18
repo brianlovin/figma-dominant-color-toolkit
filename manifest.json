@@ -2,5 +2,6 @@
   "api": "1.0.0",
   "name": "Dominant Color Utilities ✨",
   "main": "build/code.js",
-  "ui": "build/ui.html"
+  "ui": "build/ui.html",
+  "id": "744725347356614754"
 }
