@@ -1,3 +1,5 @@
+  ![Figma Dominant Color Utilities](./assets/cover.png)
+
 # Figma Dominant Color Utilities ✨
 
 Utilities for using dominant colors, palettes, and contrasting text colors.
