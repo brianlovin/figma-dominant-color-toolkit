@@ -48,13 +48,13 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
   const paint = getFirstImagePaintFromNode(node)
   imageBounds.fills = [ paint]
   imageBounds.cornerRadius = node.cornerRadius
-  imageBounds.resize(node.width > maxWidth ? maxWidth : node.width, node.height < maxImagePreviewHeight ? node.height : maxImagePreviewHeight)
-  imageBounds.y = node.height > maxImagePreviewHeight
+  imageBounds.resize(node.width >= maxWidth ? maxWidth : node.width, node.height <= maxImagePreviewHeight ? node.height : maxImagePreviewHeight)
+  imageBounds.y = node.height >= maxImagePreviewHeight
     ? 0
-    : node.height + (imagePreviewInset * 2) > maxImagePreviewHeight
-      ? 0
+    : node.height + imagePreviewInset >= maxImagePreviewHeight
+      ? (maxImagePreviewHeight - node.height) / 2
       : imagePreviewInset
-  imageBounds.x = node.width > maxWidth
+  imageBounds.x = node.width >= maxWidth
     ? 0
     : (maxWidth - node.width) / 2
   
