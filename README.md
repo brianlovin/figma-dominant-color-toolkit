@@ -4,10 +4,10 @@ Utilities for using dominant colors, palettes, and contrasting text colors.
 
 ## Usage
 
-This plugin provides core functions:
+This plugin provides two core functions:
 
-1. **Generating a utility palette** extracts the dominant color from an image, suggests high-contrast text colors, and includes additional complementary palette information.
-1. **Smart populate** takes your selection and intelligently sets layer fills and text colors based on nearby images.
+1. **Generate utility palette**: extracts the dominant color from an image, suggests high-contrast text colors, and includes additional complementary palette information.
+1. **Smart populate**: takes your selection and intelligently sets layer fills and text colors based on nearby images.
 
 ### Generating a utility palette
 
