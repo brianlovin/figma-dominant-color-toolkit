@@ -4,6 +4,8 @@
 
 Utilities for using dominant colors, palettes, and contrasting text colors.
 
+[Install on Figma](https://www.figma.com/c/plugin/744725347356614754/Dominant-Color-Utilities-%E2%9C%A8)
+
 ## Usage
 
 This plugin provides two core functions:
