@@ -14,7 +14,7 @@ This plugin provides two core functions:
 1. Select one or more layers in Figma that contain image fills. 
 1. Run the plugin `Menu > Dominant Color Utilities ✨` and your palette will be generated. 
 
-Note: To prevent overlapping frames from appearing in your designs, align your images 500px apart.
+**Note:** To prevent overlapping frames from appearing in your designs, align your images 500px apart.
 
 ### Smart populate
 
@@ -27,9 +27,9 @@ How does Smart Populate work?
 - If you selected an image along with shapes and text layers, the plugin will use the selected image to populate selected shapes with the computed dominant color and set text layers to use the high-contrast fill color.
 - If you selected shapes and text, but no image, the plugin will traverse outwards in your frame until it finds an image fill. This image will will then be used to populate the shapes and text with the dominant color and high-contrast text colors.
 
-Note: This plugin supports both image fills and background fills, using the first valid fill it can find. As a result, a frame with a background fill that has children shape and text layers will populate successfully!
+**Note:** This plugin supports both image fills and background fills, using the first valid fill it can find. As a result, a frame with a background fill that has children shape and text layers will populate successfully!
 
-Secret options: If you'd like to text layers to the dominant color rather than high-contrast color, simply include the text "dominant" anywhere in the layer name!
+**Secret options:** If you'd like to text layers to the dominant color rather than high-contrast color, simply include the text "dominant" anywhere in the layer name!
  
 ## Installation and contributing
 
