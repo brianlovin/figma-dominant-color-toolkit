@@ -4,7 +4,7 @@
 
 Generate a palette from an image to magically populate your designs.
 
-[Install on Figma](https://www.figma.com/c/plugin/744725347356614754/Dominant-Color-Toolkit-%E2%9C%A8)
+[Install on Figma](https://www.figma.com/c/plugin/744725347356614754/Dominant-Color-Toolkit-%F0%9F%8E%A8)
 
 ## Usage
 
