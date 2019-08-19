@@ -1,7 +1,7 @@
 {
-  "name": "figma-dominant-color-utilities",
+  "name": "figma-dominant-color-toolkit",
   "version": "1.0.0",
-  "description": "Utilities for using dominant colors, palettes, and contrasting text colors.",
+  "description": "Generate a palette from an image to magically populate your designs.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

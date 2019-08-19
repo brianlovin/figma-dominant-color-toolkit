@@ -89,7 +89,7 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
   recommendedTextLabel.y = dominantLabel.y + labelBottomMargin + swatchSize + labelTopMargin
 
   const paletteLabel = recommendedTextLabel.clone()
-  paletteLabel.characters = "IMAGE PALETTE"
+  paletteLabel.characters = "PALETTE"
   paletteLabel.y = recommendedTextLabel.y + labelBottomMargin + swatchSize + labelTopMargin
 
   frame.appendChild(dominantLabel)

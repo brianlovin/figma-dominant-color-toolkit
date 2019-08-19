@@ -1,10 +1,10 @@
-  ![Figma Dominant Color Utilities](./assets/cover.png)
+  ![Figma Dominant Color Toolkit](./assets/cover.png)
 
-# Figma Dominant Color Utilities ✨
+# Figma Dominant Color Toolkit 🎨
 
-Utilities for using dominant colors, palettes, and contrasting text colors.
+Generate a palette from an image to magically populate your designs.
 
-[Install on Figma](https://www.figma.com/c/plugin/744725347356614754/Dominant-Color-Utilities-%E2%9C%A8)
+[Install on Figma](https://www.figma.com/c/plugin/744725347356614754/Dominant-Color-Toolkit-%E2%9C%A8)
 
 ## Usage
 
@@ -13,17 +13,17 @@ This plugin provides two core functions:
 1. **Generate utility palette**: extracts the dominant color from an image, suggests high-contrast text colors, and includes additional complementary palette information.
 1. **Smart populate**: takes your selection and intelligently sets layer fills and text colors based on nearby images.
 
-### Generating a utility palette
+### Generating a dominant color palette
 
 1. Select one or more layers in Figma that contain image fills. 
-1. Run the plugin `Menu > Dominant Color Utilities ✨` and your palette will be generated. 
+1. Run the plugin `Menu > Dominant Color Toolkit 🎨` and your palette will be generated. 
 
 **Note:** To prevent overlapping frames from appearing in your designs, align your images 500px apart.
 
 ### Smart populate
 
 1. Select any frame, component, or instance
-2. Menu > Dominant Color Utilities ✨
+2. Menu > Dominant Color Toolkit 🎨
 3. Command + Shift + P to re-run
 
 How does Smart Populate work?
@@ -37,10 +37,10 @@ How does Smart Populate work?
  
 ## Installation and contributing
 
-1. Clone the repository: `git clone https://github.com/brianlovin/figma-dominant-color-utilities.git`
-1. Go to the directory: `cd figma-dominant-color-utilities`
+1. Clone the repository: `git clone https://github.com/brianlovin/figma-dominant-color-toolkit.git`
+1. Go to the directory: `cd figma-dominant-color-toolkit`
 1. Install dependencies with `npm install`
 1. Build the plugin: `npm run dev`
 1. Go to the `plugins` directory in Figma
 1. Add a new development plugin
-1. Select the `figma-dominant-color-utilities/manifest.json` file as the manifest
+1. Select the `figma-dominant-color-toolkit/manifest.json` file as the manifest
