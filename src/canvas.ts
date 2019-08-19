@@ -12,6 +12,8 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
   const maxImagePreviewHeight = 300
   const leftMargin = 16
   const black = { r: 0, g: 0, b: 0 }
+  const white = { r: 1, g: 1, b: 1 }
+  const paletteCornerRadius = 6
   
   const imagePreviewInset = 16
   const imageBoundsHeight = node.height > maxImagePreviewHeight
@@ -21,7 +23,7 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
   : node.height + (imagePreviewInset * 2)
   
   const contentStartY = imageBoundsHeight + labelTopMargin
-  const totalHeight = imageBoundsHeight + ((labelTopMargin + labelBottomMargin + swatchSize) * 3) + labelTopMargin
+  const totalHeight = imageBoundsHeight + ((labelTopMargin + labelBottomMargin + swatchSize) * 3) + leftMargin
 
   const fontName = { family: 'SF Pro Text', style: 'Bold'}
   await figma.loadFontAsync(fontName)
@@ -30,11 +32,23 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
   frame.resize(maxWidth, totalHeight)
   frame.x = node.x + node.width + 100
   frame.y = node.y
-  frame.effects = [{ type: 'DROP_SHADOW', visible: true, blendMode: "NORMAL", radius: 12, offset: { x: 0, y: 2 }, color: { ...black, a: 0.16 }}]
-  frame.name = "Dominant Color Utilities"
+  frame.backgrounds = []
+  frame.effects = []
+  frame.name = "Palette"
+  frame.clipsContent = false
+  const background = figma.createRectangle()
+  frame.appendChild(background)
+  background.x = 0
+  background.y = 0
+  background.resize(maxWidth, totalHeight)
+  background.cornerRadius = paletteCornerRadius
+  background.fills = [{ color: white, type: 'SOLID' }]
+  background.effects = [{ type: 'DROP_SHADOW', visible: true, blendMode: "NORMAL", radius: 12, offset: { x: 0, y: 2 }, color: { ...black, a: 0.16 }}]
 
   const imageBackground = figma.createRectangle()
   imageBackground.y = 0
+  imageBackground.topLeftRadius = paletteCornerRadius
+  imageBackground.topRightRadius = paletteCornerRadius
   imageBackground.resize(maxWidth, imageBoundsHeight)
   imageBackground.fills = [{ type: 'SOLID', color: dominantColor, opacity: 0.08 }]
   imageBackground.effects = [{ type: 'INNER_SHADOW', visible: true, blendMode: "NORMAL", radius: 0, offset: { x: 0, y: -1 }, color: { ...black, a: 0.08 }}]
@@ -84,13 +98,10 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
 
   const swatch = figma.createRectangle()
   swatch.name = "Swatch"
-  swatch.cornerRadius = 22
+  swatch.cornerRadius = 2
   swatch.resize(swatchSize, swatchSize)
   swatch.x = leftMargin
   swatch.y = dominantLabel.y + labelBottomMargin
-  swatch.strokeAlign = "INSIDE"
-  swatch.strokes = [{ type: 'SOLID', color: black, opacity: 0.08 }]
-  
   const dominantSwatch = swatch
   dominantSwatch.fills = [{ type: 'SOLID', color: dominantColor }]
   frame.appendChild(dominantSwatch)
@@ -100,6 +111,12 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
     paletteSwatch.x = leftMargin + (index * (swatchSize + swatchGap))
     paletteSwatch.y = recommendedTextLabel.y + labelBottomMargin
     paletteSwatch.fills = [{ type: 'SOLID', color }]
+    // hacky way to determine if the swatch is white
+    const { r, g, b } = color
+    if (r === 1 && g === 1 && b === 1) {
+      paletteSwatch.strokeAlign = "INSIDE"
+      paletteSwatch.strokes = [{ type: 'SOLID', color: black, opacity: 0.08 }]
+    }
     frame.appendChild(paletteSwatch)
   }
   
@@ -109,6 +126,12 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
     paletteSwatch.x = leftMargin + (index * (swatchSize + swatchGap))
     paletteSwatch.y = paletteLabel.y + labelBottomMargin
     paletteSwatch.fills = [{ type: 'SOLID', color }]
+    // hacky way to determine if the swatch is white
+    const { r, g, b } = color
+    if (r === 1 && g === 1 && b === 1) {
+      paletteSwatch.strokeAlign = "INSIDE"
+      paletteSwatch.strokes = [{ type: 'SOLID', color: black, opacity: 0.08 }]
+    }
     frame.appendChild(paletteSwatch)
   }
 
