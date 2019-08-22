@@ -25,8 +25,11 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
   const contentStartY = imageBoundsHeight + labelTopMargin
   const totalHeight = imageBoundsHeight + ((labelTopMargin + labelBottomMargin + swatchSize) * 3) + leftMargin
 
-  const fontName = { family: 'SF Pro Text', style: 'Bold'}
-  await figma.loadFontAsync(fontName)
+  const sf = { family: 'SF Pro Text', style: 'Bold'}
+  const roboto = { family: 'Roboto', style: 'Bold' }
+  const fonts = await figma.listAvailableFontsAsync()
+  const hasSf = fonts.find(({ fontName}) => fontName.family === sf.family && fontName.style === sf.style)
+  hasSf ? await figma.loadFontAsync(sf) : await figma.loadFontAsync(roboto)
 
   const frame = figma.createFrame()
   frame.resize(maxWidth, totalHeight)
@@ -75,7 +78,7 @@ export async function generateColorGuideFrame(node, data: UIColorData): Promise<
 
   const label = figma.createText()
   label.name = "Label"
-  label.fontName = fontName
+  label.fontName = hasSf ? sf : roboto
   label.fills = [{ type: 'SOLID', color: black }]
   label.fontSize = 10
   
