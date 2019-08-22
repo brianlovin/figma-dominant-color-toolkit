@@ -44,3 +44,8 @@ How does Smart Populate work?
 1. Go to the `plugins` directory in Figma
 1. Add a new development plugin
 1. Select the `figma-dominant-color-toolkit/manifest.json` file as the manifest
+
+
+## Credits
+
+- [color-thief](https://github.com/lokesh/color-thief) for finding dominant colors and generating palettes
