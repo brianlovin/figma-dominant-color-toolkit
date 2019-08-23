@@ -186,6 +186,9 @@ export function nodeIsSourceImage(node): boolean {
 export function getSourceImageNodeFromParentsOfNodes(nodes) {
   for (let node of nodes) {
     if (node.type === "PAGE") return null
+    if (node.parent.type === "PAGE") {
+      if (!nodeIsSourceImage(node)) return null
+    }
 
     if (nodeIsSourceImage(node)) return node
     if (nodeIsSourceImage(node.parent)) return node.parent
