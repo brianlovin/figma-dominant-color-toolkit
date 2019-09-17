@@ -20,7 +20,7 @@
     "typescript": "^3.6.3",
     "url-loader": "^2.1.0",
     "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.6"
+    "webpack-cli": "^3.3.9"
   },
   "dependencies": {
     "colorthief": "^2.3.0",
