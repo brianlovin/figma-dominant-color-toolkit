@@ -15,7 +15,7 @@
     "css-loader": "^3.2.1",
     "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "^3.2.0",
-    "style-loader": "^1.0.0",
+    "style-loader": "^1.0.1",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.2",
     "url-loader": "^2.3.0",
