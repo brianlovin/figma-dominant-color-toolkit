@@ -23,7 +23,7 @@
     "webpack": "^5.6.0"
   },
   "dependencies": {
-    "colorthief": "^2.3.0",
+    "colorthief": "^2.3.2",
     "node-vibrant": "^3.1.6"
   }
 }
