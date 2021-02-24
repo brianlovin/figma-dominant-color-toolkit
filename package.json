@@ -17,7 +17,7 @@
     "html-webpack-plugin": "^5.2.0",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.17",
-    "typescript": "^4.1.5",
+    "typescript": "^4.2.2",
     "url-loader": "^4.1.1",
     "webpack-cli": "^4.5.0",
     "webpack": "^5.24.1"
