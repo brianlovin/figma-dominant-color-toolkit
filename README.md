@@ -49,3 +49,5 @@ How does Smart Populate work?
 ## Credits
 
 - [color-thief](https://github.com/lokesh/color-thief) for finding dominant colors and generating palettes
+
+Test
