@@ -3,5 +3,8 @@
   "name": "Dominant Color Toolkit 🎨",
   "main": "build/code.js",
   "ui": "build/ui.html",
-  "id": "744725347356614754"
+  "id": "744725347356614754",
+  "editorType": [
+    "figma"
+  ]
 }
