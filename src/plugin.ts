@@ -50,7 +50,7 @@ async function main(nodes) {
     const data = await getDataForUIFromNode(node)
     populateUI(data)
 
-    return new Promise(res => {
+    return new Promise<void>(res => {
       figma.ui.onmessage = async data => {
         await generateColorGuideFrame(node, data).then(node => {
           figma.currentPage.selection = []
@@ -75,7 +75,7 @@ async function main(nodes) {
     const shapeNodes = getShapeNodesFromDeepSelection(selectedNode)
     const transformable = [...textNodes, ...shapeNodes]
 
-    return new Promise(res => {
+    return new Promise<void>(res => {
       figma.ui.onmessage = async data => {
         await applyTransformationsToNodes(transformable, data).then(() => res())
       }
@@ -95,7 +95,7 @@ async function main(nodes) {
     const shapeNodes = getShapeNodesFromShallowSelection(nodes)
     const transformable = [...textNodes, ...shapeNodes]
 
-    return new Promise(res => {
+    return new Promise<void>(res => {
       figma.ui.onmessage = async data => {
         await applyTransformationsToNodes(transformable, data).then(() => res())
       }
@@ -110,7 +110,7 @@ async function main(nodes) {
     const data = await getDataForUIFromNode(node)
     populateUI(data)
 
-    return new Promise(res => {
+    return new Promise<void>(res => {
       figma.ui.onmessage = async data => {
         await applyTransformationsToNodes(nodes, data).then(() => res())
       }
